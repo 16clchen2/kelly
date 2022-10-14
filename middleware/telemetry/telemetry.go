@@ -1,7 +1,9 @@
 package telemetry
 
 import (
+	"go.opencensus.io/plugin/ochttp"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp/filters"
 	"net/http"
 
 	"github.com/lixinio/kelly"
@@ -21,9 +23,14 @@ func Otelhttp(c *kelly.Context) {
 	h := otelhttp.NewHandler(
 		&t{c},
 		c.Request().RequestURI,
+		otelhttp.WithFilter(
+			filters.None(
+				filters.Path("/healthz"),
+			),
+		),
 	)
 
-	//h := &ochttp.Handler{Handler: &t{c}}
+	h = &ochttp.Handler{Handler: &t{c}}
 	h.ServeHTTP(c.ResponseWriter, c.Request())
 	// 这里无需再 InvokeNext
 }

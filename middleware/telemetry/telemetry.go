@@ -21,7 +21,7 @@ func Otelhttp(c *kelly.Context) {
 	h := otelhttp.NewHandler(
 		&t{c},
 		// TODO get from
-		c.GetDefault("SERVER_NAME", "SERVER").(string),
+		c.GetDefault("SERVER_NAME", c.Request().RequestURI).(string),
 	)
 
 	//h := &ochttp.Handler{Handler: &t{c}}

@@ -1,7 +1,6 @@
 package telemetry
 
 import (
-	"go.opencensus.io/plugin/ochttp"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp/filters"
 	"net/http"
@@ -30,7 +29,6 @@ func Otelhttp(c *kelly.Context) {
 		),
 	)
 
-	h = &ochttp.Handler{Handler: &t{c}}
 	h.ServeHTTP(c.ResponseWriter, c.Request())
 	// 这里无需再 InvokeNext
 }

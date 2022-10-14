@@ -20,8 +20,7 @@ func (t *t) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func Otelhttp(c *kelly.Context) {
 	h := otelhttp.NewHandler(
 		&t{c},
-		// TODO get from
-		c.GetDefault("SERVER_NAME", c.Request().RequestURI).(string),
+		c.Request().RequestURI,
 	)
 
 	//h := &ochttp.Handler{Handler: &t{c}}
